@@ -1,7 +1,7 @@
+from PIL import Image
 import streamlit as st
 
-from faq import Faq
-from PIL import Image
+from faq import Faq 
 from paginas_faq import tipo_financiamento, como_funciona, garantia, juros, participacao, prazos, usuario_financiamento
 
 image = Image.open("imagens/bndes.png")
