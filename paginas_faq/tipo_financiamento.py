@@ -59,7 +59,13 @@ def get_page_information(cached_df):
     )
 
     st.plotly_chart(
-        plots.get_histogram(filtered_by_year_df, sector_column, use_sum=use_sum),
+        plots.get_histogram(
+            dataframe=filtered_by_year_df,
+            column=sector_column,
+            group_by_lst=["ano_contratado", sector_column],
+            rename_dict={"ano_contratado": "Ano"},
+            use_sum=use_sum
+        ),
         use_container_width=True
     )
 
@@ -90,7 +96,13 @@ def get_page_information(cached_df):
     )
 
     st.plotly_chart(
-        plots.get_histogram(filtered_by_sector_df, subsector_column, use_sum=use_sum),
+        plots.get_histogram(
+            dataframe=filtered_by_sector_df,
+            column=subsector_column,
+            group_by_lst=["ano_contratado", subsector_column],
+            rename_dict={"ano_contratado": "Ano"},
+            use_sum=use_sum
+        ),
         use_container_width=True
     )
 

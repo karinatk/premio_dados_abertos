@@ -1,4 +1,52 @@
 import streamlit as st
 
-def get_page_information():
+def get_page_information(cached_df):
     st.title("Como funciona o financiamento?")
+
+    st.write(
+    """
+        O apoio financeiro do BNDES pode ser realizado por meio de:
+
+        - financiamentos com recursos reembolsáveis;
+        - financiamentos com recursos não reembolsáveis;
+        - subscrição de valores mobiliários;
+        - fundos de investimento de fomento a empresas nascentes, iniciantes ou em estágio de crescimento.
+        ##
+        Em alguns casos, o apoio financeiro pode ser feito de forma conjugada, combinando, por exemplo, financiamento com subscrição de valores mobiliários, a critério do BNDES.
+        As operações de financiamento podem ser realizadas de forma direta, indireta ou mista (saiba mais):
+        - Operação direta: realizada diretamente com o BNDES ou através de mandatário (via de regra, são financiamentos a projetos de investimento de valor superior a R$ 10 milhões);
+        - Operação indireta automática: realizada por meio de instituições financeiras credenciadas. Estas realizam a análise e aprovação do crédito, que é, em seguida, homologado pelo BNDES;
+        - Operação indireta não automática: similar à operação indireta automática, porém o BNDES também analisa e aprova ao crédito, após a análise da instituição financeira (via de regra, são financiamentos de valor superior a R$ 10 milhões);
+        - Operação mista: combina as forma direta e indireta de apoio.
+    """)
+
+    st.title("Evolução das formas de financiamento")
+    #pie plot
+    #bar plot
+    #colocar exemplo do df
+
+    st.title("Valor financiado X Forma de financiamento")
+    st.write(
+    """
+        O apoio direto (veja Formas de Apoio) com o BNDES pode ser solicitado para projetos de investimento a partir de R$ 10 milhões. Conheça as linhas do BNDES Finem e acesse o Navegador de Financiamento para saber mais detalhes sobre cada uma delas.
+    """)
+    #bar plot
+    #colocar exemplo do df
+
+    st.title("Tem algum financiamento feito no passado parecido com o que eu preciso?")
+    #busca financiamento parecido
+    #colocar exemplo do df
+
+    st.write(
+    """
+        ##
+        Os requisitos mínimos para obter apoio financeiro do BNDES são:
+
+        - estar em dia com obrigações fiscais, tributárias e sociais;
+        - apresentar cadastro satisfatório;
+        - ter capacidade de pagamento;
+        - dispor de garantias suficientes para cobertura do risco da operação;
+        - não estar em regime de recuperação de crédito;
+        - atender a legislação relativa à importação, no caso de financiamento para a importação de bens e serviços; e
+        - cumprir a legislação ambiental
+    """)
