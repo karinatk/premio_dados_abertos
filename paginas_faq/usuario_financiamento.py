@@ -19,22 +19,16 @@ def get_page_information(cached_df):
 
     st.title("Evolução do financiamento em relação ao porte das empresas")
 
-    row1_1, row1_2, row1_3 = st.columns((1, 1, 1))
+    row1_1, row1_2 = st.columns((1, 1))
 
     with row1_1:
-        sector_classification_type = st.radio(
-            "Tipo de classificação de setor",
-            ("BNDES", "CNAE")
-        )
-
-    with row1_2:
         aggregation_type = st.radio(
             "Tipo de agregação",
             ("Quantidade de projetos", "Valor financiado")
         )
         use_sum = True if aggregation_type == "Valor financiado" else False
 
-    with row1_3:
+    with row1_2:
         min_year, max_year = st.slider("Filtro por ano", 2002, 2021, (2002, 2021))
 
     boolean_series = (cached_df["ano_contratado"] >= min_year) & (cached_df["ano_contratado"] <= max_year)
