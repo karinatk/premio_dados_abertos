@@ -69,12 +69,12 @@ def get_page_information(cached_df):
         filtered_by_year_df[sector_column].unique().tolist()
     )
 
+    st.write("##")
+    st.title("Classificação {} - Subsetor {}".format(sector_classification_type, sector_type))
+
     if sector_classification_type == "CNAE":
         sector_classification_type += " agrupado"
     subsector_column = "Subsetor {}".format(sector_classification_type)
-
-    st.write("##")
-    st.title("{} - {}".format(sector_column, sector_type))
 
     filtered_by_sector_df = filtered_by_year_df[filtered_by_year_df[sector_column] == sector_type]
 
@@ -82,7 +82,7 @@ def get_page_information(cached_df):
         plots.get_pie_chart(
             filtered_by_sector_df,
             subsector_column,
-            title="Visualização interativa por subsetor financiado nos anos de {} a {}".format(min_year, max_year),
+            title="Porcentagem de {} por subsetores de {} nos anos de {} a {}".format(aggregation_type.lower(), sector_type.lower().strip(), min_year, max_year),
             use_sum=use_sum
             ),
         use_container_width=True
