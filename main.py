@@ -11,10 +11,6 @@ def main():
     bndes_faq.add_page("O que pode ser financiado", tipo_financiamento.get_page_information)
     bndes_faq.add_page("Quem pode obter", usuario_financiamento.get_page_information)
     bndes_faq.add_page("Como funciona", como_funciona.get_page_information)
-    bndes_faq.add_page("Participação, limites e gastos realizados", participacao.get_page_information)
-    bndes_faq.add_page("Prazos", prazos.get_page_information)
-    bndes_faq.add_page("Garantias", garantia.get_page_information)
-    bndes_faq.add_page("Taxa de juros", juros.get_page_information)
     bndes_faq.run()
 
 if __name__ == '__main__':
