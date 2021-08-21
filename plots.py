@@ -1,4 +1,5 @@
 import pandas as pd
+#import geopandas as gpd
 import plotly.express as px
 
 def get_pie_chart(dataframe, column, title, use_sum=False):
@@ -42,11 +43,20 @@ def get_name(use_sum):
     name = "Valor financiado" if use_sum == True else "Contagem"
     return name
 
-def get_histogram(dataframe, column, use_sum=False):
+def get_histogram(dataframe, column, group_by_lst, rename_dict, use_sum=False):
     agg_func = get_agg_function(use_sum)
     y_name = get_name(use_sum)
-    grouped = dataframe.groupby(["ano_contratado", column]).apply(agg_func, column=column, name=y_name).reset_index()
-    grouped.rename(columns={"ano_contratado": "Ano"}, inplace=True)
-    fig = px.bar(grouped, x="Ano", y=y_name, facet_col=column)
+    grouped = dataframe.groupby(group_by_lst).apply(agg_func, column=column, name=y_name).reset_index()
+    grouped.rename(columns=rename_dict, inplace=True)
+    fig = px.bar(grouped, x=list(rename_dict.values())[0], y=y_name, facet_col=column)
     fig.for_each_annotation(rename_title)
+    return fig
+
+def get_map(dataframe):
+    path = "C:/Users/karina.kato_ifood/Documents/BNDES/bcim_2016_21_11_2018.gpkg"
+    state_data = gpd.read_file(path, layer="lim_unidade_federacao_a")
+    bndes_state_count = dataframe.groupby(['UF']).CNPJ.count().reset_index()
+    bndes_state_count.rename({"UF": "sigla"}, axis=1, inplace=True)
+    brasil_map = state_data.merge(bndes_state_count, on="sigla", how="left")
+    fig = brasil_map.plot(column="CNPJ", cmap="Blues")
     return fig
