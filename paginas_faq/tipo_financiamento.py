@@ -1,20 +1,47 @@
 import streamlit as st
 
-from dataframe import BndesDataframe
+import plots
 
-def get_page_information(grouped_contracts_df):
+def get_page_information(cached_df):
     st.title("O que pode ser financiado?")
 
     st.write(
     """
+        O BNDES financia a quase totalidade dos setores da economia, dentre eles: infraestrutura; indústria, comércio e serviços;
+        agropecuária; exportação; desenvolvimento regional e territorial; cultura e economia criativa; entre outros.
+
+        A seguir você consegue visualizar interativamente a porcentagem de financiamentos por setor, podendo ser filtrado por ano ou removido algum setor.
         ##
-        O cliente pode solicitar o financiamento diretamente ao BNDES (apoio direto) ou por meio de instituições financeiras credenciadas (apoio indireto).
-        A forma de apoio depende da finalidade e do valor do financiamento.
-        No apoio indireto, as instituições financeiras parceiras do BNDES atuam como intermediárias na concessão do financiamento, assumindo o risco de crédito
-        (risco de não pagamento pelo cliente) total ou parcialmente. Como o BNDES não possui agências, o apoio indireto permite que seus recursos cheguem a clientes em todos os municípios do Brasil através das instituições financeiras.
-        Em geral, são realizadas na forma de apoio indireto todas as operações de financiamento à compra isolada de máquinas e equipamentos, bem como financiamentos inferiores a R$ 10 milhões destinados a projetos de implantação, modernização e expansão de empreendimentos.
-        Para solicitar apoio direto ao BNDES, é necessário, em geral, que o financiamento tenha valor superior a R$ 40 milhões - R$ 20 milhões a depender da sistemática. Em alguns casos específicos, o BNDES permite o apoio direto a financiamentos de valor inferior a esse limite.
+
     """)
 
-    df = BndesDataframe(grouped_contracts_df, grouped_contracts_df.columns)
-    st.plotly_chart(df.get_pie_chart("Setor BNDES"), use_container_width=True)
+    row1_1, row1_2 = st.columns((1,1))
+
+    with row1_1:
+        sector_type = st.radio(
+            "Escolha o tipo de setor",
+            ("BNDES", "CNAE")
+        )
+
+    with row1_2:
+        min_year, max_year = st.slider("Filtro por ano", 2002, 2021, (2002, 2021))
+
+    boolean_series = (cached_df['ano_contratado'] >= min_year) & (cached_df['ano_contratado'] <= max_year)
+    filtered_df = cached_df[boolean_series]
+
+    st.plotly_chart(
+        plots.get_pie_chart(
+            filtered_df,
+            "Setor {}".format(sector_type),
+            title='Visualização interativa de setor financiado nos anos de {} a {}'.format(min_year, max_year)),
+        use_container_width=True)
+
+    if sector_type == "CNAE":
+        sector_type = sector_type + " agrupado"
+
+    st.plotly_chart(
+        plots.get_pie_chart(
+            filtered_df,
+            "Subsetor {}".format(sector_type),
+            title='Visualização interativa de subsetor financiado nos anos de {} a {}'.format(min_year, max_year)),
+        use_container_width=True)
