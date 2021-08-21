@@ -41,6 +41,7 @@ def get_page_information(cached_df):
         As seguintes visualizações são interativas e geradas a partir dos filtros passados anteriormente.
         Nos gráficos a seguir você poderá conferir informações de {} nos anos de {} a {} por setor.
         Caso deseje remover algum setor da visualização, apenas clique no nome do setor.
+        Também é possível expandir as visualizações ou salvar as imagens geradas.
     """.format(aggregation_type.lower(), min_year, max_year)
     )
 
