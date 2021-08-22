@@ -1,5 +1,7 @@
+import os
+import json
+import streamlit as st
 import pandas as pd
-#import geopandas as gpd
 import plotly.express as px
 
 def get_pie_chart(dataframe, column, title, use_sum=False):
@@ -52,11 +54,39 @@ def get_histogram(dataframe, column, group_by_lst, rename_dict, use_sum=False):
     fig.for_each_annotation(rename_title)
     return fig
 
+def read_json(path):
+    with open(path, encoding='utf-8') as f:
+        dict = json.loads(f.read())
+    return dict
+
+#@st.cache(hash_funcs={dict: lambda _: None})
 def get_map(dataframe):
-    path = "C:/Users/karina.kato_ifood/Documents/BNDES/bcim_2016_21_11_2018.gpkg"
-    state_data = gpd.read_file(path, layer="lim_unidade_federacao_a")
-    bndes_state_count = dataframe.groupby(['UF']).CNPJ.count().reset_index()
-    bndes_state_count.rename({"UF": "sigla"}, axis=1, inplace=True)
-    brasil_map = state_data.merge(bndes_state_count, on="sigla", how="left")
-    fig = brasil_map.plot(column="CNPJ", cmap="Blues")
-    return fig
+    dirname = os.path.dirname(__file__)
+    path = os.path.join(dirname, 'geojson', 'brazil-states.json')
+    brazil_dict = read_json(path)
+    state_dict = {}
+    for feature in brazil_dict["features"]:
+        state = feature["properties"]["name"]
+        state_abbreviation = feature["properties"]["sigla"]
+        state_dict[state_abbreviation] = state
+    bndes_state_count = dataframe.groupby(['UF', 'ano_contratado']).CNPJ.count().reset_index()
+    bndes_state_count.rename({"CNPJ": "Contagem CNPJ", "ano_contratado": "Ano"}, inplace=True, axis=1)
+    dataframe["Estado"] = dataframe["UF"].apply(lambda uf: state_dict.get(uf, None))
+    dataframe.dropna(inplace=True)
+    bndes_state_count = dataframe.groupby(['Estado', 'ano_contratado']).CNPJ.count().reset_index()
+    bndes_state_count.rename({"CNPJ": "Contagem CNPJ", "ano_contratado": "Ano"}, inplace=True, axis=1)
+    bndes_state_count
+    figure_dict = {}
+    fig = px.choropleth(
+        bndes_state_count,
+        locations = "Estado",
+        geojson = brazil_dict,
+        color = "Contagem CNPJ",
+        hover_name = "Estado",
+        hover_data =["Contagem CNPJ"],
+        title = "Contagem de CNPJ por estado com financiamento BNDES por ano",
+        animation_frame = "Ano"
+    )
+    fig.update_geos(fitbounds = "locations", visible = False)
+    figure_dict['map'] = fig
+    return figure_dict

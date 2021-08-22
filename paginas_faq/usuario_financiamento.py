@@ -88,7 +88,8 @@ def get_page_information(cached_df):
 
     st.title("Porte da empresa financiadas X Região")
     #map plot
-    #st.plotly_chart(get_map(dataframe))
+    #fig_dict = plots.get_map(filtered_by_year_df)
+    #st.plotly_chart(fig_dict['map'])
 
     st.plotly_chart(
         plots.get_pie_chart(
