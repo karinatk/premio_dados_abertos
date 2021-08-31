@@ -18,6 +18,12 @@ conda activate financiamento_bndes
 ```bash
 pip install -r requirements.txt
 ```
+
+- baixe os arquivos necessários:
+```bash
+./download_files.sh
+```
+
 - rode a aplicação com o comando:
 ```bash
 streamlit run main.py
