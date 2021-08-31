@@ -8,6 +8,6 @@ curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/do
 fileidcsv="1-DJTxRkDqkvKBVXM6XqChHKNcw8pQaTq"
 filenamecsv="./files/csv/output_csv/bndes_financiamentos.csv"
 curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id=${fileidcsv}" > /dev/null
-curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=${fileidcsv}" -o ${filenamecsv}
+curl --create-dirs -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=${fileidcsv}" -o ${filenamecsv}
 
 rm cookie
