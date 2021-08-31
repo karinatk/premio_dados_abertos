@@ -1,1 +1,1 @@
-web: sh setup.sh && sh download_files.sh && streamlit run main.py
+web: sh download_files.sh && sh setup.sh && streamlit run main.py
