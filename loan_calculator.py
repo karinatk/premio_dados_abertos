@@ -1,6 +1,5 @@
 def get_financial_cost(similar_product_df):
     financial_cost = similar_product_df["custo_financeiro"].iloc[0]
-    #financial_cost = get_most_common(similar_product_df, "custo_financeiro")
     if financial_cost == "TJLP":
         financial_cost = "TLP"
     return financial_cost
@@ -25,10 +24,6 @@ def get_prediction(model, feature_data, encoder_dict, training_columns, label_co
     decoder_dict = create_decoder_dict(encoder_dict[label_column])
     prediction = decoder_dict[encoded_prediction]
     return prediction, prediction_prob
-
-def get_most_common(similar_df, column):
-    most_common = similar_df.sort_values(by=["ano_contratado"], ascending=False)[column].mode()[0]
-    return most_common
 
 def get_similar_recent_financing(full_df, filter_column, filter_value, amount_of_money):
     similar_values_df = full_df[full_df[filter_column] == filter_value]
@@ -70,7 +65,3 @@ def get_weighted_information(full_df, similar_df, financial_cost, amount_of_mone
         wighted_amortization += (time_score_diff * recent_amortization_period)
 
     return wighted_fee, wighted_grace, wighted_amortization
-
-#def get_similarity_score(similar_df, company_nature, size_of_company, amount_of_money, innovation, company_sector, company_subsector):
-#    for index, row in similar_df.iterrows():
-#        pass
