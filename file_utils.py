@@ -12,7 +12,7 @@ def read_image(path):
 
 @st.cache(persist=True)
 def read_df(path):
-    bndes_df = pd.read_csv(path, sep=";", encoding="utf-8", dtype={"cnpj": object})
+    bndes_df = pd.read_csv(path, sep=";", encoding="utf-8")
     return bndes_df
 
 @st.cache(persist=True)
